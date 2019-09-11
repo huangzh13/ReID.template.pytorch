@@ -14,14 +14,12 @@ import torch
 import torch.nn as nn
 from torch.backends import cudnn
 
-# from trainers.trainer import Trainer
+from trainers.trainer import Trainer
 from data import make_loader
 from logger import make_logger
-
-
-# from models import make_model
-# from optimizer import make_optimizer
-# from scheduler import make_scheduler
+from models import make_model, make_loss
+from optimizer import make_optimizer
+from scheduler import make_scheduler
 
 
 def train(cfg):
@@ -36,6 +34,7 @@ def train(cfg):
     logger = make_logger("project", output_dir, 'log')
 
     # device
+    num_gpus = 0
     if cfg.DEVICE == 'cuda':
         os.environ['CUDA_VISIBLE_DEVICES'] = cfg.DEVICE_ID
         num_gpus = len(cfg.DEVICE_ID.split(','))
@@ -44,39 +43,40 @@ def train(cfg):
     device = torch.device(cfg.DEVICE)
 
     # data
-    train_loader, query_loader, gallery_loader = make_loader(cfg)
+    train_loader, query_loader, gallery_loader, num_classes = make_loader(cfg)
 
     # model
-    model = make_model(cfg, num_classes=2)
+    model = make_model(cfg, num_classes=num_classes)
     if num_gpus > 1:
         model = nn.DataParallel(model)
 
     # solver
-    criterion = nn.CrossEntropyLoss()
+    criterion = make_loss(cfg)
     optimizer = make_optimizer(cfg, model)
     scheduler = make_scheduler(cfg, optimizer)
 
     # do_train
     trainer = Trainer(model=model,
+                      optimizer=optimizer,
                       criterion=criterion,
                       logger=logger,
                       scheduler=scheduler,
                       device=device)
 
-    trainer.train(start_epoch=0,
-                  total_epoch=cfg.SOLVER.MAX_EPOCHS,
-                  train_loader=train_loader,
-                  val_loader=val_loader,
-                  optimizer=optimizer,
-                  print_freq=cfg.SOLVER.PRINT_FREQ,
-                  eval_period=cfg.SOLVER.EVAL_PERIOD,
-                  checkpoint_period=cfg.SOLVER.CHECK_PERIOD)
+    trainer.run(start_epoch=0,
+                total_epoch=cfg.SOLVER.MAX_EPOCHS,
+                train_loader=train_loader,
+                query_loader=query_loader,
+                gallery_loader=gallery_loader,
+                print_freq=cfg.SOLVER.PRINT_FREQ,
+                eval_period=cfg.SOLVER.EVAL_PERIOD,
+                checkpoint_period=cfg.SOLVER.CHECK_PERIOD)
 
     print('Done.')
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Project.")
+    parser = argparse.ArgumentParser(description="Person Re-identification Project.")
     parser.add_argument('--config', default='./configs/sample.yaml')
     args = parser.parse_args()
 

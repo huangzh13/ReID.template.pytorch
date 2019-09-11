@@ -2,9 +2,9 @@
 -------------------------------------------------
    File Name:    __init__.py.py
    Author:       Zhonghao Huang
-   Date:         2019/9/9
+   Date:         2019/9/10
    Description:
 -------------------------------------------------
 """
 
-from .evaluation import evaluation
+from .triplet import TripletLoss

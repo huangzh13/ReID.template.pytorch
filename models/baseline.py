@@ -29,7 +29,7 @@ class Baseline(nn.Module):
 
         # backbone
         if arch not in FACTORY:
-            raise KeyError("Unknown models: ", arch)
+            raise KeyError("Unknown arch: ", arch)
         else:
             resnet = FACTORY[arch](pretrained=True)
             if stride == 1:
@@ -50,13 +50,13 @@ class Baseline(nn.Module):
         self.gap = nn.AdaptiveAvgPool2d((1, 1))
 
         self.bottleneck = nn.Sequential(
-            nn.Linear(2048, 512),
-            nn.BatchNorm1d(512),
+            nn.Linear(2048, 1024),
+            nn.BatchNorm1d(1024),
             nn.LeakyReLU(0.1),
             nn.Dropout(p=0.5)
         )
         self.bottleneck.apply(weights_init_kaiming)
-        self.classifier = nn.Linear(512, self.num_classes)
+        self.classifier = nn.Linear(1024, self.num_classes)
         self.classifier.apply(weights_init_classifier)
 
     def forward(self, x):
@@ -67,7 +67,7 @@ class Baseline(nn.Module):
         if self.training:
             feat = self.bottleneck(global_feat)
             cls_score = self.classifier(feat)
-            return [global_feat], [cls_score]
+            return [cls_score], [global_feat]
         else:
             return global_feat
 

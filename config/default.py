@@ -12,9 +12,9 @@ _C.DEVICE_ID = '0'
 # MODEL
 # -----------------------------------------------------------------------------
 _C.MODEL = CN()
-_C.MODEL.NAME = 'ResModel'
-_C.MODEL.BACKBONE = 'ResNet50'
-_C.MODEL.PRETRAINED = True
+_C.MODEL.NAME = 'baseline'
+_C.MODEL.ARCH = 'resnet50'
+_C.MODEL.STRIDE = 2
 
 # -----------------------------------------------------------------------------
 # INPUT
@@ -50,6 +50,7 @@ _C.DATASETS.ROOT = '/data/hzh/data'
 # DataLoader
 # -----------------------------------------------------------------------------
 _C.DATALOADER = CN()
+# Sampler
 # Number of data loading threads
 _C.DATALOADER.NUM_WORKERS = 4
 # Number of instance for one batch
@@ -61,7 +62,9 @@ _C.DATALOADER.NUM_INSTANCES = 16
 # ---------------------------------------------------------------------------- #
 _C.SOLVER = CN()
 # Sampler for data loading
-_C.SOLVER.LOSS = 'softmax'
+_C.SOLVER.LOSS = 'softmax_triplet'
+_C.SOLVER.MARGIN = 0.3
+
 _C.SOLVER.MAX_EPOCHS = 120
 _C.SOLVER.OPTIMIZER_NAME = "Adam"
 
@@ -69,6 +72,7 @@ _C.SOLVER.BASE_LR = 3e-4
 # SGD
 # _C.SOLVER.BASE_LR = 0.01
 _C.SOLVER.NESTEROV = True
+_C.SOLVER.MOMENTUM = 0.9
 
 # Adam
 _C.SOLVER.WEIGHT_DECAY = 0.0005

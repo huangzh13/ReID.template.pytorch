@@ -20,6 +20,7 @@ def make_loader_dsap():
 
 def make_loader(cfg):
     _data = ReIDDataset(dataset_dir=cfg.DATASETS.NAME, root=cfg.DATASETS.ROOT)
+    num_train_pids = _data.num_train_pids
 
     train_loader = DataLoader(ImageData(_data.train, TrainTransform(p=0.5)),
                               sampler=RandomIdentitySampler(_data.train, cfg.DATALOADER.NUM_INSTANCES),
@@ -34,4 +35,4 @@ def make_loader(cfg):
                                 batch_size=cfg.DATALOADER.BATCH_SIZE, num_workers=cfg.DATALOADER.NUM_WORKERS,
                                 pin_memory=True)
 
-    return train_loader, query_loader, gallery_loader
+    return train_loader, query_loader, gallery_loader, num_train_pids
