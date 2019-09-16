@@ -12,7 +12,6 @@ import numpy as np
 
 import torch
 
-from utils import evaluation
 from utils.meters import AverageValueMeter
 from trainers.evaluator import Evaluator
 
