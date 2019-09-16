@@ -1,4 +1,4 @@
-OUTPUT_DIR: "./checkpoint/Market1501/Exp-2"
+OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-1"
 DEVICE: "cuda"
 DEVICE_ID: ('1')
 
@@ -10,7 +10,7 @@ INPUT:
   HF_PROB: 0.5 # random horizontal flip
 
 DATASETS:
-  NAME: 'Market1501'
+  NAME: 'CUHK03/labeled'
   ROOT: '/home/hzh/data'
 
 DATALOADER:
