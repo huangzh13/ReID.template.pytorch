@@ -34,15 +34,16 @@ class Trainer:
     def run(self, start_epoch, total_epoch, train_loader, query_loader, gallery_loader,
             print_freq, eval_period, checkpoint_period):
 
-        self.logger.info('Start at Epoch[{}]'.format(start_epoch))
+        self.logger.info('Start at Epoch[{}]\n'.format(start_epoch))
 
         losses = AverageValueMeter()
 
         for epoch in range(start_epoch, total_epoch):
+            self.model.train()
+
             if self.scheduler is not None:
                 self.scheduler.step(epoch)
-
-            self.model.train()
+                self.logger.info('Epoch[{}] Lr:{:.2e}'.format(epoch, self.scheduler.get_lr()[0]))
 
             start = time.time()
             interval = len(train_loader) // print_freq
