@@ -76,9 +76,10 @@ class BNNeck(nn.Module):
         super(BNNeck, self).__init__()
         self.in_planes = in_planes
         self.num_classes = num_classes
+
         self.bn = nn.BatchNorm1d(self.in_planes)
         self.bn.bias.requires_grad_(False)  # no shift
-        self.classifier = nn.Linear(self.in_planes, self.num_classes)
+        self.classifier = nn.Linear(self.in_planes, self.num_classes, bias=False)
 
         self.bn.apply(weights_init_kaiming)
         self.classifier.apply(weights_init_classifier)
@@ -87,7 +88,4 @@ class BNNeck(nn.Module):
         feat = self.bn(x)
         cls = self.classifier(feat)
 
-        if self.training:
-            return cls, x
-        else:
-            return cls, feat
+        return cls
