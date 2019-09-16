@@ -69,7 +69,16 @@ class Trainer:
 
             # ===== Epoch done =====
             if (epoch + 1) % eval_period == 0:
-                self.evaluator.evaluate(query_loader, gallery_loader)
+                ranks = [1, 5, 10]
+
+                cmc, mAP = self.evaluator.evaluate(query_loader, gallery_loader)
+
+                self.logger.info("Results ----------")
+                self.logger.info("mAP: {:.1%}".format(mAP))
+                self.logger.info("CMC curve")
+                for r in ranks:
+                    self.logger.info("Rank-{:<3}: {:.1%}".format(r, cmc[r - 1]))
+                self.logger.info("------------------\n")
 
             if (epoch + 1) % checkpoint_period == 0:
-                print('Saved.\n')
+                self.logger.info('Saved.\n')
