@@ -1,4 +1,4 @@
-OUTPUT_DIR: "./checkpoint/DogCat/Exp-1"
+OUTPUT_DIR: "./checkpoint/Market1501/Exp-2"
 DEVICE: "cuda"
 DEVICE_ID: ('1')
 
@@ -7,8 +7,6 @@ MODEL:
   ARCH: 'resnet50'
 
 INPUT:
-  SIZE_TRAIN: [256, 128]
-  SIZE_TEST: [256, 128]
   HF_PROB: 0.5 # random horizontal flip
 
 DATASETS:
@@ -18,13 +16,13 @@ DATASETS:
 DATALOADER:
   NUM_WORKERS: 2
   BATCH_SIZE: 64
-  NUM_INSTANCES: 16
+  NUM_INSTANCES: 4
 
 SOLVER:
   LOSS: 'softmax_triplet'
   OPTIMIZER_NAME: 'Adam'
   MAX_EPOCHS: 320
-  BASE_LR: 0.005
+  BASE_LR: 0.0004
   WEIGHT_DECAY: 0.0005
 
   CHECK_PERIOD: 5
@@ -33,7 +31,7 @@ SOLVER:
 
 SCHEDULER:
   NAME: 'StepLR'
-  STEP: 2
+  STEP: 10
   GAMMA: 0.5
 
 TEST:

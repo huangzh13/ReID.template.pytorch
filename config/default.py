@@ -69,6 +69,7 @@ _C.SOLVER.MAX_EPOCHS = 120
 _C.SOLVER.OPTIMIZER_NAME = "Adam"
 
 _C.SOLVER.BASE_LR = 3e-4
+
 # SGD
 # _C.SOLVER.BASE_LR = 0.01
 _C.SOLVER.NESTEROV = True
@@ -85,6 +86,11 @@ _C.SCHEDULER = CN()
 _C.SCHEDULER.NAME = 'StepLR'
 _C.SCHEDULER.STEP = 5
 _C.SCHEDULER.GAMMA = 0.1
+
+# warm up factor
+_C.SCHEDULER.WARMUP_FACTOR = 100
+# iterations of warm up
+_C.SCHEDULER.WARMUP_ITERS = 20
 
 # ---------------------------------------------------------------------------- #
 # Test

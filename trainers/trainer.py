@@ -8,11 +8,7 @@
 """
 
 import time
-import numpy as np
 
-import torch
-
-from utils import evaluation
 from utils.meters import AverageValueMeter
 from trainers.evaluator import Evaluator
 
@@ -38,15 +34,17 @@ class Trainer:
     def run(self, start_epoch, total_epoch, train_loader, query_loader, gallery_loader,
             print_freq, eval_period, checkpoint_period):
 
-        self.logger.info('Start at Epoch[{}]'.format(start_epoch))
+        self.logger.info('Start at Epoch[{}]\n'.format(start_epoch))
 
         losses = AverageValueMeter()
 
         for epoch in range(start_epoch, total_epoch):
+            self.model.train()
+            losses.reset()
+
             if self.scheduler is not None:
                 self.scheduler.step(epoch)
-
-            self.model.train()
+                self.logger.info('Epoch[{}] Lr:{:.2e}'.format(epoch, self.scheduler.get_lr()[0]))
 
             start = time.time()
             interval = len(train_loader) // print_freq
@@ -66,10 +64,20 @@ class Trainer:
                         'Epoch[{}] Iteration[{}/{}] Loss: {:.4f}'.format(epoch, batch_index + 1,
                                                                          len(train_loader),
                                                                          losses.value()[0]))
+            self.logger.info('Epoch[{}] Done.\n'.format(epoch))
 
             # ===== Epoch done =====
             if (epoch + 1) % eval_period == 0:
-                self.evaluator.evaluate(query_loader, gallery_loader)
+                ranks = [1, 5, 10]
+
+                cmc, mAP = self.evaluator.evaluate(query_loader, gallery_loader)
+
+                self.logger.info("Results ----------")
+                self.logger.info("mAP: {:.1%}".format(mAP))
+                self.logger.info("CMC curve")
+                for r in ranks:
+                    self.logger.info("Rank-{:<3}: {:.1%}".format(r, cmc[r - 1]))
+                self.logger.info("------------------\n")
 
             if (epoch + 1) % checkpoint_period == 0:
-                print('Saved.\n')
+                self.logger.info('Saved.\n')

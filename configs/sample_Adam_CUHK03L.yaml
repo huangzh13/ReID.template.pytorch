@@ -1,39 +1,37 @@
-OUTPUT_DIR: "./checkpoint/Market1501/Exp-1"
+OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-1"
 DEVICE: "cuda"
-DEVICE_ID: ('1,2')
+DEVICE_ID: ('1')
 
 MODEL:
   NAME: 'baseline'
   ARCH: 'resnet50'
 
 INPUT:
-  SIZE_TRAIN: [256, 128]
-  SIZE_TEST: [256, 128]
   HF_PROB: 0.5 # random horizontal flip
 
 DATASETS:
-  NAME: 'Market1501'
+  NAME: 'CUHK03/labeled'
   ROOT: '/home/hzh/data'
 
 DATALOADER:
-  NUM_WORKERS: 4
-  BATCH_SIZE: 128
+  NUM_WORKERS: 2
+  BATCH_SIZE: 64
   NUM_INSTANCES: 4
 
 SOLVER:
   LOSS: 'softmax_triplet'
-  OPTIMIZER_NAME: 'SGD'
+  OPTIMIZER_NAME: 'Adam'
   MAX_EPOCHS: 320
-  BASE_LR: 0.001
+  BASE_LR: 0.0008
   WEIGHT_DECAY: 0.0005
 
   CHECK_PERIOD: 5
-  EVAL_PERIOD: 1
+  EVAL_PERIOD: 5
   PRINT_FREQ: 10
 
 SCHEDULER:
   NAME: 'StepLR'
-  STEP: 10
+  STEP: 40
   GAMMA: 0.5
 
 TEST:

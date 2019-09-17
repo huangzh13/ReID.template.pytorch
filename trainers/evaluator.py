@@ -96,14 +96,7 @@ class Evaluator:
         print("Computing CMC and mAP")
         cmc, mAP = self.eval_func_gpu(distmat, q_pids, g_pids, q_cids, g_cids)
 
-        print("Results ----------")
-        print("mAP: {:.1%}".format(mAP))
-        print("CMC curve")
-        for r in ranks:
-            print("Rank-{:<3}: {:.1%}".format(r, cmc[r - 1]))
-        print("------------------")
-
-        return cmc[0]
+        return cmc, mAP
 
     def evaluate_flip(self, queryloader, galleryloader, queryFliploader, galleryFliploader,
                       ranks=None, eval_flip=False, re_ranking=False, savefig=False):
