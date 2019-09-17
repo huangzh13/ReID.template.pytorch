@@ -1,6 +1,6 @@
 OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-1"
 DEVICE: "cuda"
-DEVICE_ID: ('1')
+DEVICE_ID: ('2,3')
 
 MODEL:
   NAME: 'baseline'
@@ -17,7 +17,7 @@ DATASETS:
 
 DATALOADER:
   NUM_WORKERS: 4
-  BATCH_SIZE: 32
+  BATCH_SIZE: 64
   NUM_INSTANCES: 4
 
 SOLVER:
