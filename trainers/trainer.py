@@ -63,6 +63,7 @@ class Trainer:
                         'Epoch[{}] Iteration[{}/{}] Loss: {:.4f}'.format(epoch, batch_index + 1,
                                                                          len(train_loader),
                                                                          losses.value()[0]))
+            self.logger.info('Epoch[{}] Done.\n'.format(epoch))
 
             # ===== Epoch done =====
             if (epoch + 1) % eval_period == 0:

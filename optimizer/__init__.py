@@ -17,7 +17,11 @@ def make_optimizer(cfg, model):
         if not value.requires_grad:
             continue
 
-        lr = cfg.SOLVER.BASE_LR
+        if 'Warmup' in cfg.SCHEDULER.NAME:
+            lr = cfg.SOLVER.BASE_LR / cfg.SCHEDULER.WARMUP_FACTOR
+        else:
+            lr = cfg.SOLVER.BASE_LR
+
         weight_decay = cfg.SOLVER.WEIGHT_DECAY
 
         # if "bias" in key:
