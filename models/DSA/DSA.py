@@ -22,7 +22,7 @@ class DSA(nn.Module):
         super(DSA, self).__init__()
 
         self.n_class = n_class
-        self.MFSteam = MFStream()
+        self.MFStream = MFStream()
         self.dsag = dsag
         if dsag:
             self.DSAGStream = DSAGStream()
@@ -40,7 +40,7 @@ class DSA(nn.Module):
     def forward(self, x, bnneck=True, infer_dsap=True):
         img_ori, img_dsap = x
 
-        global_feat_mf, local_feats_mf = self.MFSteam(img_ori)
+        global_feat_mf, local_feats_mf = self.MFStream(img_ori)
 
         if self.dsag and infer_dsap:
             global_feat_dsag, local_feats_dsag = self.DSAGStream(img_dsap)
@@ -64,7 +64,7 @@ class DSA(nn.Module):
             cls_fused = [self.classifier_global_fused(global_feat_fused),
                          self.classifier_local_fused(local_feats_fused_cat)]
 
-            return cls_mf, [global_feat_fused, local_feats_fused_cat], cls_fused
+            return cls_mf + cls_fused, [global_feat_fused, local_feats_fused_cat]
         else:
             if bnneck:
                 local_feat = self.classifier_local_fused.bn(local_feats_fused_cat)

@@ -9,8 +9,34 @@
 
 import math
 import random
+import numpy as np
 
+import torch
 from torchvision import transforms as T
+
+
+class TransformDSAP:
+    @staticmethod
+    def transform(x):
+        x = T.ToTensor()(x)
+        x = T.Normalize(mean=[0.485, 0.456, 0.406],
+                        std=[0.229, 0.224, 0.225])(x)
+        return x
+
+    def __call__(self, x):
+        solution = 32
+        dsap_imgs = []
+
+        img = np.asarray(x)
+        for i in range(4):
+            for j in range(6):
+                dsap_imgs.append(img[(solution * i):(solution * i + solution),
+                                 (solution * j):(solution * j + solution), :])
+
+        imgs = [self.transform(img) for img in dsap_imgs]
+        imgs_tensor = torch.stack(imgs)
+
+        return imgs_tensor
 
 
 class TrainTransform:

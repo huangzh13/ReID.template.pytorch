@@ -12,9 +12,43 @@ import torch.nn as nn
 from models.baseline import Baseline
 from models.losses import TripletLoss
 
+from models.DSA.DSA import DSA
+
 MODEL = {
     'baseline': Baseline,
 }
+
+
+def make_model_dsa(cfg, num_classes):
+    model = DSA(num_classes, dsag=True)
+
+    return model
+
+
+def make_loss_dsa(cfg, num_classes):
+    xent_criterion = nn.CrossEntropyLoss()
+
+    if cfg.SOLVER.LOSS == 'softmax_triplet':
+        embedding_criterion = TripletLoss(margin=cfg.SOLVER.MARGIN)
+
+        def criterion(softmax_y, triplet_y, labels):
+            assert len(softmax_y) == 11 and len(triplet_y) == 2, "Error: Some loss items are missing."
+
+            triplet_losses = [1.5 * embedding_criterion(output, labels)[0] for output in triplet_y]
+            softmax_losses = []
+            for idx, score in enumerate(softmax_y):
+                if idx < 9:
+                    softmax_losses.append(0.5 * xent_criterion(score, labels))
+                else:
+                    softmax_losses.append(xent_criterion(score, labels))
+            sum_loss = triplet_losses + softmax_losses
+
+            loss = sum(sum_loss)
+            return loss
+
+        return criterion
+    else:
+        raise KeyError("Unknown loss: ", cfg.SOLVER.LOSS)
 
 
 def make_model(cfg, num_classes):
@@ -26,7 +60,7 @@ def make_model(cfg, num_classes):
     return model
 
 
-def make_loss(cfg):
+def make_loss(cfg, num_classes):
     xent_criterion = nn.CrossEntropyLoss()
 
     if cfg.SOLVER.LOSS == 'softmax_triplet':
