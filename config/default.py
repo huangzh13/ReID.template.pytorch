@@ -15,6 +15,7 @@ _C.MODEL = CN()
 _C.MODEL.NAME = 'baseline'
 _C.MODEL.ARCH = 'resnet50'
 _C.MODEL.STRIDE = 2
+_C.MODEL.LABEL_SMOOTH = True
 
 # -----------------------------------------------------------------------------
 # INPUT

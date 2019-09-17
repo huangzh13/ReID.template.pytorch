@@ -10,7 +10,7 @@
 import torch.nn as nn
 
 from models.baseline import Baseline
-from models.losses import TripletLoss
+from models.losses import TripletLoss, CrossEntropyLabelSmooth
 
 from models.DSA.DSA import DSA
 
@@ -26,7 +26,10 @@ def make_model_dsa(cfg, num_classes):
 
 
 def make_loss_dsa(cfg, num_classes):
-    xent_criterion = nn.CrossEntropyLoss()
+    if cfg.MODEL.LABEL_SMOOTH:
+        xent_criterion = CrossEntropyLabelSmooth(num_classes=num_classes)
+    else:
+        xent_criterion = nn.CrossEntropyLoss()
 
     if cfg.SOLVER.LOSS == 'softmax_triplet':
         embedding_criterion = TripletLoss(margin=cfg.SOLVER.MARGIN)

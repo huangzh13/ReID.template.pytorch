@@ -5,6 +5,7 @@ DEVICE_ID: ('1')
 MODEL:
   NAME: 'baseline'
   ARCH: 'resnet50'
+  LABEL_SMOOTH: True
 
 INPUT:
   HF_PROB: 0.5 # random horizontal flip

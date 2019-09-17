@@ -8,3 +8,4 @@
 """
 
 from .triplet import TripletLoss
+from .smooth import CrossEntropyLabelSmooth

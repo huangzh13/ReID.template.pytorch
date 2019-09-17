@@ -5,6 +5,8 @@ DEVICE_ID: ('1')
 MODEL:
   NAME: 'baseline'
   ARCH: 'resnet50'
+  LABEL_SMOOTH: True
+
 
 INPUT:
   HF_PROB: 0.5 # random horizontal flip
@@ -14,7 +16,7 @@ DATASETS:
   ROOT: '/home/hzh/data'
 
 DATALOADER:
-  NUM_WORKERS: 2
+  NUM_WORKERS: 4
   BATCH_SIZE: 32
   NUM_INSTANCES: 4
 
@@ -25,9 +27,9 @@ SOLVER:
   BASE_LR: 0.0008
   WEIGHT_DECAY: 0.0005
 
-  CHECK_PERIOD: 5
-  EVAL_PERIOD: 1
-  PRINT_FREQ: 10
+  CHECK_PERIOD: 8
+  EVAL_PERIOD: 4
+  PRINT_FREQ: 5
 
 SCHEDULER:
   NAME: 'WarmupStepLR'
