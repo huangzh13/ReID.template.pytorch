@@ -40,6 +40,7 @@ class Trainer:
 
         for epoch in range(start_epoch, total_epoch):
             self.model.train()
+            losses.reset()
 
             if self.scheduler is not None:
                 self.scheduler.step(epoch)
