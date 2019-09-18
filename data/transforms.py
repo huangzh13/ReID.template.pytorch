@@ -44,10 +44,10 @@ class TrainTransform:
         self.p = p
 
     def __call__(self, x):
-        x = T.Resize((384, 128))(x)
+        x = T.Resize((256, 128))(x)
         x = T.RandomHorizontalFlip()(x)
         x = T.Pad(10)(x)
-        x = T.RandomCrop((384, 128))(x)
+        x = T.RandomCrop((256, 128))(x)
         x = T.ToTensor()(x)
         x = T.Normalize(mean=[0.485, 0.456, 0.406],
                         std=[0.229, 0.224, 0.225])(x)
@@ -61,7 +61,7 @@ class TestTransform:
         self.flip = flip
 
     def __call__(self, x=None):
-        x = T.Resize((384, 128))(x)
+        x = T.Resize((256, 128))(x)
         if self.flip:
             x = T.functional.hflip(x)
         x = T.ToTensor()(x)

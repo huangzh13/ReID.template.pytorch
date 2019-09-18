@@ -1,6 +1,6 @@
-OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-1"
+OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-4"
 DEVICE: "cuda"
-DEVICE_ID: ('2,3')
+DEVICE_ID: ('2')
 
 MODEL:
   NAME: 'baseline'
