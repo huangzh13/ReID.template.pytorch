@@ -1,0 +1,44 @@
+OUTPUT_DIR: "./checkpoint/Market1501/Exp-3"
+DEVICE: "cuda"
+DEVICE_ID: ('2')
+
+MODEL:
+  NAME: 'baseline'
+  ARCH: 'resnet50'
+
+INPUT:
+  HF_PROB: 0.5 # random horizontal flip
+
+DATASETS:
+  NAME: 'CUHK03/labeled'
+  ROOT: '/home/hzh/data'
+
+DATALOADER:
+  NUM_WORKERS: 2
+  BATCH_SIZE: 64
+  NUM_INSTANCES: 4
+
+SOLVER:
+  LOSS: 'softmax_triplet'
+  OPTIMIZER_NAME: 'Adam'
+  MAX_EPOCHS: 320
+  BASE_LR: 0.0008
+  WEIGHT_DECAY: 0.0005
+
+  CHECK_PERIOD: 5
+  EVAL_PERIOD: 1
+  PRINT_FREQ: 10
+
+SCHEDULER:
+  NAME: 'WarmupStepLR'
+  STEP: 40
+  GAMMA: 0.5
+
+  WARMUP_FACTOR: 100
+  WARMUP_ITERS: 20
+
+
+TEST:
+  BATCH_SIZE: 128
+
+

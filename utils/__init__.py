@@ -7,4 +7,3 @@
 -------------------------------------------------
 """
 
-from .evaluation import evaluation
