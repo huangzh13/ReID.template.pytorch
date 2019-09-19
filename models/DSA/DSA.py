@@ -7,6 +7,7 @@
 -------------------------------------------------
 """
 
+import math
 import torch
 import torch.nn as nn
 
@@ -73,7 +74,9 @@ class DSA(nn.Module):
                 local_feat = local_feats_fused_cat
                 global_feat = global_feat_fused
 
-            feat = torch.cat([local_feat, global_feat], 1)
+            local_feat_norm = nn.functional.normalize(local_feat) * (1 / math.sqrt(2))
+            global_feat_norm = nn.functional.normalize(global_feat) * (1 / math.sqrt(2))
+            feat = torch.cat([global_feat_norm, local_feat_norm], 1)
             return feat
 
 
