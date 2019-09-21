@@ -27,7 +27,9 @@ class HeadMF(BaseModule):
 
         # global branch
         self.inplanes = 1024
-        self.layer_conv5_g = self._make_layer(Bottleneck, 512, 3, stride=2)
+        resnet = resnet50(pretrained=True)
+        # self.layer_conv5_g = self._make_layer(Bottleneck, 512, 3, stride=2)
+        self.layer_conv5_g = resnet.layer4
 
         # local branch (8)
         for i in range(self.parts):
