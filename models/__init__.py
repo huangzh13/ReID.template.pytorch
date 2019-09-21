@@ -9,11 +9,12 @@
 
 import torch.nn as nn
 
-from models.baseline import Baseline
+from models.baseline import Baseline, PCB
 from models.losses import TripletLoss
 
 MODEL = {
     'baseline': Baseline,
+    'PCB': PCB
 }
 
 

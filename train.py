@@ -77,7 +77,7 @@ def train(cfg):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Person Re-identification Project.")
-    parser.add_argument('--config', default='./configs/sample.yaml')
+    parser.add_argument('--config', default='./configs/PCB_Adam_Market1501_Warmup.yaml')
     args = parser.parse_args()
 
     from config import cfg as opt

@@ -37,9 +37,9 @@ def weights_init_classifier(m):
 # |--Linear--|--bn--|--relu--|--Linear--|
 class ClassBlock(nn.Module):
     def __init__(self, input_dim, class_num, linear=True, num_bottleneck=512,
-                 bn=True, relu=False, drop=0.5, return_feat=False):
+                 bn=True, relu=True, drop=0.5):
         super(ClassBlock, self).__init__()
-        self.return_feat = return_feat
+
         add_block = []
         if linear:
             add_block += [nn.Linear(input_dim, num_bottleneck)]
@@ -51,6 +51,7 @@ class ClassBlock(nn.Module):
             add_block += [nn.LeakyReLU(0.1)]
         if drop > 0:
             add_block += [nn.Dropout(p=drop)]
+
         add_block = nn.Sequential(*add_block)
         add_block.apply(weights_init_kaiming)
 
@@ -62,13 +63,9 @@ class ClassBlock(nn.Module):
 
     def forward(self, x):
         x = self.add_block(x)
-        if self.return_feat:
-            feat = x
-            cls = self.fc(x)
-            return cls, feat
-        else:
-            cls = self.fc(x)
-            return cls
+        cls = self.fc(x)
+
+        return cls
 
 
 class BNNeck(nn.Module):
