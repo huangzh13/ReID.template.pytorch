@@ -1,6 +1,6 @@
-OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-9"
+OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-8"
 DEVICE: "cuda"
-DEVICE_ID: ('3')
+DEVICE_ID: ('1')
 
 MODEL:
   NAME: 'baseline'
@@ -22,9 +22,9 @@ DATALOADER:
 
 SOLVER:
   LOSS: 'softmax_triplet'
-  OPTIMIZER_NAME: 'Adam'
+  OPTIMIZER_NAME: 'SGD'
   MAX_EPOCHS: 320
-  BASE_LR: 0.0008
+  BASE_LR: 0.01
   WEIGHT_DECAY: 0.0005
 
   CHECK_PERIOD: 8

@@ -32,7 +32,7 @@ class HeadMF(BaseModule):
         # local branch (8)
         for i in range(self.parts):
             name = 'layer_conv5_l_' + str(i)
-            self.inplanes = 1024
+            self.inplanes = 128
             setattr(self, name, self._make_layer(Bottleneck, 64, 3, stride=2))
 
         self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
@@ -54,7 +54,7 @@ class HeadMF(BaseModule):
         for i in range(self.parts):
             name = 'layer_conv5_l_' + str(i)
             conv5_l = getattr(self, name)
-            feat = conv5_l(x)
+            feat = conv5_l(x[:, i * 128:(i + 1) * 128, :, :])
             local_feats.append(self.avg_pool(feat).squeeze())
 
         return global_feat, local_feats
@@ -87,7 +87,7 @@ class MFStream(nn.Module):
 
 
 if __name__ == '__main__':
-    images_ori = torch.randn(32, 3, 384, 128)
+    images_ori = torch.randn(32, 3, 256, 128)
     model = MFStream(True)
 
     out = model(images_ori)
