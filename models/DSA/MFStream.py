@@ -25,12 +25,6 @@ class HeadMF(BaseModule):
         super(HeadMF, self).__init__()
         self.parts = 8
 
-        # global branch
-        self.inplanes = 1024
-        resnet = resnet50(pretrained=True)
-        # self.layer_conv5_g = self._make_layer(Bottleneck, 512, 3, stride=2)
-        self.layer_conv5_g = resnet.layer4
-
         # local branch (8)
         for i in range(self.parts):
             name = 'layer_conv5_l_' + str(i)
@@ -45,6 +39,12 @@ class HeadMF(BaseModule):
             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
+
+        # global branch
+        self.inplanes = 1024
+        resnet = resnet50(pretrained=True)
+        # self.layer_conv5_g = self._make_layer(Bottleneck, 512, 3, stride=2)
+        self.layer_conv5_g = resnet.layer4
 
     def forward(self, x):
         # global branch
