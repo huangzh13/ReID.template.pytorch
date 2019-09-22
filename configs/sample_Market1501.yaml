@@ -5,6 +5,7 @@ DEVICE_ID: ('3')
 MODEL:
   NAME: 'baseline'
   ARCH: 'resnet50'
+  LABEL_SMOOTH: True
 
 INPUT:
   SIZE_TRAIN: [384, 128]

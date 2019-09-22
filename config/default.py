@@ -14,7 +14,8 @@ _C.DEVICE_ID = '0'
 _C.MODEL = CN()
 _C.MODEL.NAME = 'baseline'
 _C.MODEL.ARCH = 'resnet50'
-_C.MODEL.STRIDE = 2
+_C.MODEL.STRIDE = 1
+_C.MODEL.LABEL_SMOOTH = False
 
 # -----------------------------------------------------------------------------
 # INPUT

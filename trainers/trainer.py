@@ -35,7 +35,7 @@ class Trainer:
         self.target = pids.to(self.device)
 
     def run(self, start_epoch, total_epoch, train_loader, query_loader, gallery_loader,
-            print_freq, eval_period, checkpoint_period, out_dir):
+            print_freq, eval_period, out_dir):
 
         self.logger.info('Start at Epoch[{}]\n'.format(start_epoch))
 

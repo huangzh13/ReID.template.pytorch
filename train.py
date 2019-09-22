@@ -54,7 +54,7 @@ def train(cfg):
         model = nn.DataParallel(model)
 
     # solver
-    criterion = make_loss(cfg)
+    criterion = make_loss(cfg, num_classes)
     optimizer = make_optimizer(cfg, model)
     scheduler = make_scheduler(cfg, optimizer)
 
@@ -73,7 +73,6 @@ def train(cfg):
                 gallery_loader=gallery_loader,
                 print_freq=cfg.SOLVER.PRINT_FREQ,
                 eval_period=cfg.SOLVER.EVAL_PERIOD,
-                checkpoint_period=cfg.SOLVER.CHECK_PERIOD,
                 out_dir=output_dir)
 
     print('Done.')
