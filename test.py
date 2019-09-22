@@ -14,12 +14,12 @@ import torch
 import torch.nn as nn
 from torch.backends import cudnn
 
-from data import make_loader
+from data import make_loader, make_loader_flip
 from models import make_model
 from trainers.evaluator import Evaluator
 
 
-def test(cfg):
+def test(cfg, flip):
     # device
     num_gpus = 0
     if cfg.DEVICE == 'cuda':
@@ -34,13 +34,13 @@ def test(cfg):
 
     # model
     model = make_model(cfg, num_classes=num_classes)
-    model.load_state_dict(torch.load(os.path.join(cfg.OUTPUT_DIR, cfg.TEST.WEIGHTS_NAME)))
+    model.load_state_dict(torch.load(os.path.join(cfg.OUTPUT_DIR, model.__class__.__name__ + '_best.pth')))
     if num_gpus > 1:
         model = nn.DataParallel(model)
     model = model.to(device)
     evaluator = Evaluator(model)
 
-    # output
+    # Results
     cmc, mAP = evaluator.evaluate(query_loader, gallery_loader)
 
     ranks = [1, 5, 10]
@@ -49,13 +49,28 @@ def test(cfg):
     print("CMC curve")
     for r in ranks:
         print("Rank-{:<3}: {:.1%}".format(r, cmc[r - 1]))
-    print("------------------")
+    print("------------------\n")
+
+    # Results with flip
+    if flip:
+        print("Results with flip --------------")
+        query_flip_loader, gallery_flip_loader = make_loader_flip(cfg)
+        cmc, mAP = evaluator.evaluate_flip(query_loader, gallery_loader, query_flip_loader, gallery_flip_loader)
+
+        print("Results ----------")
+        print("mAP: {:.1%}".format(mAP))
+        print("CMC curve")
+        for r in ranks:
+            print("Rank-{:<3}: {:.1%}".format(r, cmc[r - 1]))
+        print("------------------\n")
+
     print('Done')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Person Re-identification Project.")
-    parser.add_argument('--config', default='./configs/sample_Adam_Market1501_Warmup.yaml')
+    parser.add_argument('--config', default='./configs/sample_Adam_CUHK03L_Warmup_Exp-13.yaml')
+    parser.add_argument('--flip', default=True)
     args = parser.parse_args()
 
     from config import cfg as opt
@@ -63,4 +78,4 @@ if __name__ == '__main__':
     opt.merge_from_file(args.config)
     opt.freeze()
 
-    test(opt)
+    test(opt, args.flip)

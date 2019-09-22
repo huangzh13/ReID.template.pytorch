@@ -14,8 +14,18 @@ from data.transforms import TrainTransform, TestTransform
 from data.samplers import RandomIdentitySampler
 
 
-def make_loader_dsap():
-    pass
+def make_loader_flip(cfg):
+    _data = ReIDDataset(dataset_dir=cfg.DATASETS.NAME, root=cfg.DATASETS.ROOT)
+
+    query_flip_loader = DataLoader(ImageData(_data.query, TestTransform(flip=True)),
+                                   batch_size=cfg.DATALOADER.BATCH_SIZE, num_workers=cfg.DATALOADER.NUM_WORKERS,
+                                   pin_memory=True)
+
+    gallery_flip_loader = DataLoader(ImageData(_data.gallery, TestTransform(flip=True)),
+                                     batch_size=cfg.DATALOADER.BATCH_SIZE, num_workers=cfg.DATALOADER.NUM_WORKERS,
+                                     pin_memory=True)
+
+    return query_flip_loader, gallery_flip_loader
 
 
 def make_loader(cfg):
