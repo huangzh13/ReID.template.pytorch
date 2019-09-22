@@ -25,7 +25,7 @@ _C.INPUT.SIZE_TRAIN = [384, 128]
 # Size of the image during test
 _C.INPUT.SIZE_TEST = [384, 128]
 # Random probability for image horizontal flip
-_C.INPUT.HF_PROB = 0.5
+# _C.INPUT.HF_PROB = 0.5
 
 # Values to be used for image normalization
 # _C.INPUT.PIXEL_MEAN = [0.5, 0.5, 0.5]
@@ -67,7 +67,6 @@ _C.SOLVER.MARGIN = 0.3
 
 _C.SOLVER.MAX_EPOCHS = 120
 _C.SOLVER.OPTIMIZER_NAME = "Adam"
-
 _C.SOLVER.BASE_LR = 3e-4
 
 # SGD
@@ -78,16 +77,16 @@ _C.SOLVER.MOMENTUM = 0.9
 # Adam
 _C.SOLVER.WEIGHT_DECAY = 0.0005
 
-_C.SOLVER.CHECK_PERIOD = 50
 _C.SOLVER.EVAL_PERIOD = 50
 _C.SOLVER.PRINT_FREQ = 10
 
+# LR Scheduler
 _C.SCHEDULER = CN()
 _C.SCHEDULER.NAME = 'StepLR'
 _C.SCHEDULER.STEP = 5
 _C.SCHEDULER.GAMMA = 0.1
 
-# warm up factor
+# Warm up factor
 _C.SCHEDULER.WARMUP_FACTOR = 100
 # iterations of warm up
 _C.SCHEDULER.WARMUP_ITERS = 20
@@ -98,6 +97,4 @@ _C.SCHEDULER.WARMUP_ITERS = 20
 # This is global, so if we have 8 GPUs and IMS_PER_BATCH = 16, each GPU will
 # see 2 images per batch
 _C.TEST = CN()
-
 _C.TEST.BATCH_SIZE = 128
-_C.TEST.WEIGHTS_NAME = ''

@@ -1,4 +1,4 @@
-OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-13"
+OUTPUT_DIR: "./checkpoint/CUHK03D/Exp-0922-1"
 DEVICE: "cuda"
 DEVICE_ID: ('3')
 
@@ -7,10 +7,10 @@ MODEL:
   ARCH: 'resnet50'
 
 INPUT:
-  HF_PROB: 0.5 # random horizontal flip
+  SIZE_TRAIN: [384, 128]
 
 DATASETS:
-  NAME: 'CUHK03/labeled'
+  NAME: 'CUHK03/detected'
   ROOT: '/home/hzh/data'
 
 DATALOADER:
@@ -21,24 +21,23 @@ DATALOADER:
 SOLVER:
   LOSS: 'softmax_triplet'
   OPTIMIZER_NAME: 'Adam'
-  MAX_EPOCHS: 20
+  MAX_EPOCHS: 360
   BASE_LR: 0.0008
   WEIGHT_DECAY: 0.0005
 
-  CHECK_PERIOD: 5
-  EVAL_PERIOD: 4
+  EVAL_PERIOD: 5
   PRINT_FREQ: 10
 
 SCHEDULER:
   NAME: 'WarmupStepLR'
-  STEP: 5
+  STEP: 40
   GAMMA: 0.5
 
   WARMUP_FACTOR: 100
-  WARMUP_ITERS: 5
+  WARMUP_ITERS: 20
 
 
 TEST:
-  BATCH_SIZE: 128
+  BATCH_SIZE: 64
 
 
