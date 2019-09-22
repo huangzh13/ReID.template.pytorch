@@ -1,6 +1,6 @@
-OUTPUT_DIR: "./checkpoint/Market1501/Exp-3"
+OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-12"
 DEVICE: "cuda"
-DEVICE_ID: ('2')
+DEVICE_ID: ('3')
 
 MODEL:
   NAME: 'baseline'
@@ -14,7 +14,7 @@ DATASETS:
   ROOT: '/home/hzh/data'
 
 DATALOADER:
-  NUM_WORKERS: 2
+  NUM_WORKERS: 4
   BATCH_SIZE: 64
   NUM_INSTANCES: 4
 
@@ -25,8 +25,8 @@ SOLVER:
   BASE_LR: 0.0008
   WEIGHT_DECAY: 0.0005
 
-  CHECK_PERIOD: 5
-  EVAL_PERIOD: 1
+  CHECK_PERIOD: 4
+  EVAL_PERIOD: 4
   PRINT_FREQ: 10
 
 SCHEDULER:
@@ -39,6 +39,7 @@ SCHEDULER:
 
 
 TEST:
-  BATCH_SIZE: 128
+  BATCH_SIZE: 64
+  WEIGHTS_NAME: Baseline_epoch_7.pth
 
 

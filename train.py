@@ -25,8 +25,11 @@ from scheduler import make_scheduler
 def train(cfg):
     # output
     output_dir = cfg.OUTPUT_DIR
-    if output_dir and not os.path.exists(output_dir):
+    if os.path.exists(output_dir):
+        raise KeyError("Existing path: ", output_dir)
+    else:
         os.makedirs(output_dir)
+
     with open(os.path.join(output_dir, 'config.yaml'), 'w') as f_out:
         print(cfg, file=f_out)
 
@@ -70,14 +73,15 @@ def train(cfg):
                 gallery_loader=gallery_loader,
                 print_freq=cfg.SOLVER.PRINT_FREQ,
                 eval_period=cfg.SOLVER.EVAL_PERIOD,
-                checkpoint_period=cfg.SOLVER.CHECK_PERIOD)
+                checkpoint_period=cfg.SOLVER.CHECK_PERIOD,
+                out_dir=output_dir)
 
     print('Done.')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Person Re-identification Project.")
-    parser.add_argument('--config', default='./configs/PCB_Adam_Market1501_Warmup.yaml')
+    parser.add_argument('--config', default='./configs/sample_Adam_Market1501_Warmup.yaml')
     args = parser.parse_args()
 
     from config import cfg as opt

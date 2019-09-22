@@ -7,7 +7,10 @@
 -------------------------------------------------
 """
 
+import os
 import time
+
+import torch
 
 from utils.meters import AverageValueMeter
 from trainers.evaluator import Evaluator
@@ -32,7 +35,7 @@ class Trainer:
         self.target = pids.to(self.device)
 
     def run(self, start_epoch, total_epoch, train_loader, query_loader, gallery_loader,
-            print_freq, eval_period, checkpoint_period):
+            print_freq, eval_period, checkpoint_period, out_dir):
 
         self.logger.info('Start at Epoch[{}]\n'.format(start_epoch))
 
@@ -80,4 +83,6 @@ class Trainer:
                 self.logger.info("------------------\n")
 
             if (epoch + 1) % checkpoint_period == 0:
-                self.logger.info('Saved.\n')
+                save_filename = (self.model.__class__.__name__ + '_epoch_%s.pth' % epoch)
+                torch.save(self.model.state_dict(), os.path.join(out_dir, save_filename))
+                self.logger.info(save_filename + ' Saved.\n')
