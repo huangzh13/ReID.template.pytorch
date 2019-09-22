@@ -1,4 +1,4 @@
-OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-9"
+OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-10"
 DEVICE: "cuda"
 DEVICE_ID: ('3')
 
