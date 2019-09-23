@@ -92,4 +92,4 @@ class Trainer:
                     torch.save(self.model.state_dict(), os.path.join(out_dir, save_filename))
                     self.logger.info(save_filename + ' saved.\n')
 
-        print('Best mAP {:.1%}, achieved at Epoch [{}]'.format(best_mAP, best_epoch))
+        self.logger.info('Best mAP {:.1%}, achieved at Epoch [{}]'.format(best_mAP, best_epoch))
