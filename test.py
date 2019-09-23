@@ -64,7 +64,7 @@ def test(cfg, flip):
             print("Rank-{:<3}: {:.1%}".format(r, cmc[r - 1]))
         print("------------------\n")
 
-    print('Done')
+    print('Done.')
 
 
 if __name__ == '__main__':

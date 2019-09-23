@@ -96,21 +96,17 @@ class EvaluatorDSA:
 
         return cmc, mAP
 
-    def evaluate_flip(self, queryloader, galleryloader, queryFliploader, galleryFliploader,
-                      ranks=None, eval_flip=False, re_ranking=False, savefig=False):
-        if ranks is None:
-            ranks = [1, 5, 10]
+    def evaluate_flip(self, queryloader, galleryloader, queryFliploader, galleryFliploader, savefig=False):
+
         self.model.eval()
         qf, q_pids, q_camids = [], [], []
         for inputs0, inputs1 in zip(queryloader, queryFliploader):
             inputs, pids, camids = self._parse_data(inputs0)
             feature0 = self._forward(inputs)
-            if eval_flip:
-                inputs, pids, camids = self._parse_data(inputs1)
-                feature1 = self._forward(inputs)
-                qf.append((feature0 + feature1) / 2.0)
-            else:
-                qf.append(feature0)
+
+            inputs, pids, camids = self._parse_data(inputs1)
+            feature1 = self._forward(inputs)
+            qf.append((feature0 + feature1) / 2.0)
 
             q_pids.extend(pids)
             q_camids.extend(camids)
@@ -124,12 +120,10 @@ class EvaluatorDSA:
         for inputs0, inputs1 in zip(galleryloader, galleryFliploader):
             inputs, pids, camids = self._parse_data(inputs0)
             feature0 = self._forward(inputs)
-            if eval_flip:
-                inputs, pids, camids = self._parse_data(inputs1)
-                feature1 = self._forward(inputs)
-                gf.append((feature0 + feature1) / 2.0)
-            else:
-                gf.append(feature0)
+
+            inputs, pids, camids = self._parse_data(inputs1)
+            feature1 = self._forward(inputs)
+            gf.append((feature0 + feature1) / 2.0)
 
             g_pids.extend(pids)
             g_camids.extend(camids)
@@ -145,31 +139,7 @@ class EvaluatorDSA:
         q_g_dist = torch.pow(qf, 2).sum(dim=1, keepdim=True).expand(m, n) + \
                    torch.pow(gf, 2).sum(dim=1, keepdim=True).expand(n, m).t()
         q_g_dist.addmm_(1, -2, qf, gf.t())
-
-        if re_ranking:
-            q_q_dist = torch.pow(qf, 2).sum(dim=1, keepdim=True).expand(m, m) + \
-                       torch.pow(qf, 2).sum(dim=1, keepdim=True).expand(m, m).t()
-            q_q_dist.addmm_(1, -2, qf, qf.t())
-
-            g_g_dist = torch.pow(gf, 2).sum(dim=1, keepdim=True).expand(n, n) + \
-                       torch.pow(gf, 2).sum(dim=1, keepdim=True).expand(n, n).t()
-            g_g_dist.addmm_(1, -2, gf, gf.t())
-
-            q_g_dist = q_g_dist.numpy()
-            q_g_dist[q_g_dist < 0] = 0
-            q_g_dist = np.sqrt(q_g_dist)
-
-            q_q_dist = q_q_dist.numpy()
-            q_q_dist[q_q_dist < 0] = 0
-            q_q_dist = np.sqrt(q_q_dist)
-
-            g_g_dist = g_g_dist.numpy()
-            g_g_dist[g_g_dist < 0] = 0
-            g_g_dist = np.sqrt(g_g_dist)
-
-            distmat = torch.Tensor(re_ranking_func(q_g_dist, q_q_dist, g_g_dist))
-        else:
-            distmat = q_g_dist
+        distmat = q_g_dist
 
         if savefig:
             print("Saving fingure")
@@ -179,14 +149,7 @@ class EvaluatorDSA:
         print("Computing CMC and mAP")
         cmc, mAP = self.eval_func_gpu(distmat, q_pids, g_pids, q_camids, g_camids)
 
-        print("Results ----------")
-        print("mAP: {:.1%}".format(mAP))
-        print("CMC curve")
-        for r in ranks:
-            print("Rank-{:<3}: {:.1%}".format(r, cmc[r - 1]))
-        print("------------------")
-
-        return cmc[0]
+        return cmc, mAP
 
     def _parse_data(self, inputs):
         imgs, imgs_dsap, pids, camids = inputs
