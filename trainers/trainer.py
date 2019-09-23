@@ -7,7 +7,10 @@
 -------------------------------------------------
 """
 
+import os
 import time
+
+import torch
 
 from utils.meters import AverageValueMeter
 from trainers.evaluator import Evaluator
@@ -32,12 +35,14 @@ class Trainer:
         self.target = pids.to(self.device)
 
     def run(self, start_epoch, total_epoch, train_loader, query_loader, gallery_loader,
-            print_freq, eval_period, checkpoint_period):
+            print_freq, eval_period, out_dir):
 
         self.logger.info('Start at Epoch[{}]\n'.format(start_epoch))
 
         losses = AverageValueMeter()
 
+        best_epoch = 0
+        best_mAP = 0.
         for epoch in range(start_epoch, total_epoch):
             self.model.train()
             losses.reset()
@@ -79,5 +84,12 @@ class Trainer:
                     self.logger.info("Rank-{:<3}: {:.1%}".format(r, cmc[r - 1]))
                 self.logger.info("------------------\n")
 
-            if (epoch + 1) % checkpoint_period == 0:
-                self.logger.info('Saved.\n')
+                if mAP > best_mAP:
+                    best_mAP = mAP
+                    best_epoch = epoch
+
+                    save_filename = (self.model.__class__.__name__ + '_best.pth')
+                    torch.save(self.model.state_dict(), os.path.join(out_dir, save_filename))
+                    self.logger.info(save_filename + ' saved.\n')
+
+        self.logger.info('Best mAP {:.1%}, achieved at Epoch [{}]'.format(best_mAP, best_epoch))

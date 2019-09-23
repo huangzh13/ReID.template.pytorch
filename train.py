@@ -25,8 +25,11 @@ from scheduler import make_scheduler
 def train(cfg):
     # output
     output_dir = cfg.OUTPUT_DIR
-    if output_dir and not os.path.exists(output_dir):
+    if os.path.exists(output_dir):
+        raise KeyError("Existing path: ", output_dir)
+    else:
         os.makedirs(output_dir)
+
     with open(os.path.join(output_dir, 'config.yaml'), 'w') as f_out:
         print(cfg, file=f_out)
 
@@ -51,7 +54,7 @@ def train(cfg):
         model = nn.DataParallel(model)
 
     # solver
-    criterion = make_loss(cfg)
+    criterion = make_loss(cfg, num_classes)
     optimizer = make_optimizer(cfg, model)
     scheduler = make_scheduler(cfg, optimizer)
 
@@ -70,7 +73,7 @@ def train(cfg):
                 gallery_loader=gallery_loader,
                 print_freq=cfg.SOLVER.PRINT_FREQ,
                 eval_period=cfg.SOLVER.EVAL_PERIOD,
-                checkpoint_period=cfg.SOLVER.CHECK_PERIOD)
+                out_dir=output_dir)
 
     print('Done.')
 
