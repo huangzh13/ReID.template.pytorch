@@ -85,6 +85,7 @@ if __name__ == '__main__':
     images_dsap = torch.randn(32, 24, 3, 32, 32)
 
     model_1 = DSA(751, True)
+    print(model_1)
     out = model_1((images_ori, images_dsap))
     print(out[0][0].shape)
     print(len(out[0]))
