@@ -50,9 +50,7 @@ class EvaluatorDSA:
             fig.savefig(os.path.join(savefig, '%d.png' % q_pids[i]))
             plt.close(fig)
 
-    def evaluate(self, query_loader, gallery_loader, ranks=None, save_fig=False):
-        if ranks is None:
-            ranks = [1, 5, 10]
+    def evaluate(self, query_loader, gallery_loader, save_fig=False):
         self.model.eval()
 
         qf, q_pids, q_cids = [], [], []

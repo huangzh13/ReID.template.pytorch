@@ -1,9 +1,9 @@
-OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-DSA-0923-1"
+OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-MF-0923-1"
 DEVICE: "cuda"
-DEVICE_ID: ('3')
+DEVICE_ID: ('1')
 
 MODEL:
-  NAME: 'DSA'
+  NAME: 'MFStream'
   ARCH: 'resnet50'
   LABEL_SMOOTH: True
 

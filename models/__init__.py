@@ -17,12 +17,19 @@ from models.DSA.DSA import DSA
 
 MODEL = {
     'baseline': Baseline,
-    'PCB': PCB
+    'PCB': PCB,
+    'DSA': DSA,
+    'MFStream': DSA
 }
 
 
 def make_model_dsa(cfg, num_classes):
-    model = DSA(num_classes, dsag=True)
+    if cfg.MODEL.NAME not in MODEL or cfg.MODEL.NAME == 'baseline':
+        raise KeyError("Unknown model: ", cfg.MODEL.NAME)
+    elif cfg.MODEL.NAME == 'DSA':
+        model = DSA(num_classes, dsag=True)
+    else:
+        model = DSA(num_classes, dsag=False)
 
     return model
 
