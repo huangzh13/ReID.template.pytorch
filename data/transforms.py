@@ -27,11 +27,10 @@ class TransformDSAP:
         solution = 32
         dsap_imgs = []
 
-        img = np.asarray(x)
-        for i in range(4):
-            for j in range(6):
-                dsap_imgs.append(img[(solution * i):(solution * i + solution),
-                                 (solution * j):(solution * j + solution), :])
+        for j in range(4):
+            for i in range(6):
+                dsap_imgs.append(x.crop((solution * i, solution * j,
+                                         solution * (i + 1), solution * (j + 1))))
 
         imgs = [self.transform(img) for img in dsap_imgs]
         imgs_tensor = torch.stack(imgs)
