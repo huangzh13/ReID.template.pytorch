@@ -69,7 +69,7 @@ def test(cfg, flip):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Person Re-identification Project.")
-    parser.add_argument('--config', default='./configs/sample_Adam_CUHK03L_Warmup_Exp-13.yaml')
+    parser.add_argument('--config', default='./configs/sample.yaml')
     parser.add_argument('--flip', default=True)
     args = parser.parse_args()
 
