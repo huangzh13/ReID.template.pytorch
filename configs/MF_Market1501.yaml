@@ -1,0 +1,44 @@
+OUTPUT_DIR: "./checkpoint/Market1501/Exp-MF-0923-1"
+DEVICE: "cuda"
+DEVICE_ID: ('3')
+
+MODEL:
+  NAME: 'MFStream'
+  ARCH: 'resnet50'
+  LABEL_SMOOTH: True
+
+INPUT:
+  SIZE_TRAIN: [384, 128]
+
+DATASETS:
+  NAME: 'Market1501'
+  ROOT: '/home/hzh/data'
+
+DATALOADER:
+  NUM_WORKERS: 4
+  BATCH_SIZE: 64
+  NUM_INSTANCES: 4
+
+SOLVER:
+  LOSS: 'softmax_triplet'
+  OPTIMIZER_NAME: 'Adam'
+  MAX_EPOCHS: 360
+  BASE_LR: 0.0008
+  WEIGHT_DECAY: 0.0005
+
+  EVAL_PERIOD: 5
+  PRINT_FREQ: 10
+
+SCHEDULER:
+  NAME: 'WarmupStepLR'
+  STEP: 40
+  GAMMA: 0.5
+
+  WARMUP_FACTOR: 100
+  WARMUP_ITERS: 20
+
+
+TEST:
+  BATCH_SIZE: 64
+
+
