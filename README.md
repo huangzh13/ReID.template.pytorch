@@ -42,10 +42,13 @@ python train.py --config ./configs/sample_Market1501.yaml
 
 | | Rank@1 | mAP| 
 | -------- | ----- | ---- | 
+| Market1501(MF-Stream) | 94.7% | 85.4% |
 | Market1501 | [] | [] |
+| DukeMTMC(MF-Stream) | 87.5% | 76.1% | 
 | DukeMTMC | [] | [] | 
 | CUHK03-labeled(MF-Stream) | 75.9% | 73.3% | 
 | CUHK03-labeled | [] | [] | 
+| CUHK03-detected(MF-Stream) | 72.6% | 70.1% | 
 | CUHK03-detected | [] | [] | 
 | CUHK01 | [] | [] | 
 
@@ -53,10 +56,13 @@ python train.py --config ./configs/sample_Market1501.yaml
 
 | | Rank@1 | mAP| 
 | -------- | ----- | ---- | 
+| Market1501(MF-Stream) | 94.6% | 86.1% |
 | Market1501 | [] | [] |
+| DukeMTMC(MF-Stream) | 87.5% | 76.9% | 
 | DukeMTMC | [] | [] | 
 | CUHK03-labeled(MF-Stream) | 77.2% | 74.3% | 
 | CUHK03-labeled | [] | [] | 
+| CUHK03-detected(MF-Stream) | 72.3% | 70.8% | 
 | CUHK03-detected | [] | [] | 
 | CUHK01 | [] | [] | 
 
