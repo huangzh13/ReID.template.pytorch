@@ -1,6 +1,6 @@
 OUTPUT_DIR: "./checkpoint/CUHK03L/Exp-0922-1"
 DEVICE: "cuda"
-DEVICE_ID: ('3')
+DEVICE_ID: ('2')
 
 MODEL:
   NAME: 'baseline'
