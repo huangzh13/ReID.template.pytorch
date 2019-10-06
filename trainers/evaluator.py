@@ -89,7 +89,7 @@ class Evaluator:
         if save_fig:
             print("Saving figure.")
             self.save_incorrect_pairs(distmat.numpy(), query_loader, gallery_loader,
-                                      g_pids.numpy(), q_pids.numpy(), g_cids.numpy(), q_cids.numpy(), save_fig)
+                                      g_pids.numpy(), q_pids.numpy(), g_cids.numpy(), q_cids.numpy(), 'saved')
 
         print("Computing CMC and mAP")
         cmc, mAP = self.eval_func_gpu(distmat, q_pids, g_pids, q_cids, g_cids)
