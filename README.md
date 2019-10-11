@@ -8,7 +8,7 @@
 | DukeMTMC | 86.4% | 74.5% | 
 | CUHK03-labeled | 75.9% | 72.5% | 
 | CUHK03-detected | 71.2% | 68.0% | 
-| CUHK01 | [] | [] | 
+| CUHK01(finetune on CUHK03) | 90.5% | 89.4% | 
 
 
 ## Test
