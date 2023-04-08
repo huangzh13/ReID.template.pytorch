@@ -1,6 +1,6 @@
 Pillow
 matplotlib
-torch==1.0.1
+torch==1.13.1
 torchvision==0.2.0
 numpy
 yacs
